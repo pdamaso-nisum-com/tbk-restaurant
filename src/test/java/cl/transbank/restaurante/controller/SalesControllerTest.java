@@ -1,27 +1,35 @@
 package cl.transbank.restaurante.controller;
 
 import cl.transbank.restaurante.domain.SalesIngress;
+import cl.transbank.restaurante.service.SalesBook;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
+import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.BDDMockito.given;
 
+@ExtendWith(MockitoExtension.class)
 class SalesControllerTest {
 
+    @Mock
+    private SalesBook salesBook;
+    @InjectMocks
     private SalesController salesController;
-    private List<SalesIngress> salesRegistry;
 
     @BeforeEach
     void setUp() {
-        salesRegistry = new ArrayList<>();
-        salesController = new SalesController(salesRegistry);
+        salesController = new SalesController(salesBook);
     }
 
     @Test
@@ -29,13 +37,12 @@ class SalesControllerTest {
 
         SalesIngress salesIngress = getMockSalesIngress(LocalDate.now());
 
+        given(salesBook.addEntry(salesIngress)).willReturn(salesIngress);
+
         ResponseEntity<SalesIngress> salesIngressRegistered = salesController.register(salesIngress);
 
         assertThat(salesIngressRegistered.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(salesIngressRegistered.getBody()).isEqualTo(salesIngress);
-        assertThat(salesRegistry)
-                .hasSize(1)
-                .contains(salesIngress);
     }
 
     @Test
@@ -47,7 +54,9 @@ class SalesControllerTest {
         SalesIngress todaySale = getMockSalesIngress(today);
         salesController.register(todaySale);
 
-        ResponseEntity<List<SalesIngress>> allTodaySales
+        given(salesBook.getEntriesBy(today)).willReturn(Collections.singletonList(todaySale));
+
+        ResponseEntity<Collection<SalesIngress>> allTodaySales
                 = salesController.getAll(today.getYear(), today.getMonth().getValue(), today.getDayOfMonth());
 
         assertThat(allTodaySales.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -66,7 +75,7 @@ class SalesControllerTest {
         salesController.register(todaySale);
 
         LocalDate aWeekAgo = today.minusWeeks(1);
-        ResponseEntity<List<SalesIngress>> allTodaySales
+        ResponseEntity<Collection<SalesIngress>> allTodaySales
                 = salesController.getAll(aWeekAgo.getYear(), aWeekAgo.getMonth().getValue(), aWeekAgo.getDayOfMonth());
 
         assertThat(allTodaySales.getStatusCode()).isEqualTo(HttpStatus.OK);
