@@ -1,6 +1,7 @@
 package cl.transbank.restaurante.scheduler;
 
 import cl.transbank.restaurante.domain.SalesIngress;
+import cl.transbank.restaurante.messaging.SalesIngressPublisher;
 import cl.transbank.restaurante.service.SalesBook;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomUtils;
@@ -16,15 +17,19 @@ import java.time.LocalDate;
 public class MockSalesIngressScheduler {
 
     private final SalesBook salesBook;
+    private final SalesIngressPublisher salesIngressPublisher;
 
-    public MockSalesIngressScheduler(SalesBook salesBook) {
+    public MockSalesIngressScheduler(SalesBook salesBook,
+                                     SalesIngressPublisher salesIngressPublisher) {
         this.salesBook = salesBook;
+        this.salesIngressPublisher = salesIngressPublisher;
     }
 
     @Scheduled(initialDelay = 10_000L, fixedDelay = 10_000L)
     public void trigger() {
         SalesIngress mockSalesIngress = getMockSalesIngress();
         salesBook.addEntry(mockSalesIngress);
+        salesIngressPublisher.publish(mockSalesIngress);
     }
 
     private SalesIngress getMockSalesIngress() {

@@ -3,3 +3,10 @@ server:
 
 jwt:
   secret: /B?D(G+KbPeShVmYq3t6w9z$C&F)H@McQfTjWnZr4u7x!A%D*G-KaNdRgUkXp2s5
+
+spring:
+  rabbitmq:
+    addresses: localhost:5672
+    virtual-host: /
+    username: guest
+    password: guest
