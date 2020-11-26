@@ -13,7 +13,7 @@
 
 #### How to run app (alternatives)
 * `./gradlew bootRun`
-* `java -jar build/libs/restaurante-0.0.1.jar`
+* `java -jar build/libs/restaurant-0.0.1.jar`
 * Run through IDE
 
 ## API
