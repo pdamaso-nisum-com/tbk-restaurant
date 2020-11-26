@@ -1,31 +1,30 @@
 package cl.transbank.restaurante.service;
 
 import cl.transbank.restaurante.domain.SalesIngress;
-import cl.transbank.restaurante.repository.SalesRepository;
-import org.junit.jupiter.api.BeforeEach;
+import cl.transbank.restaurante.messaging.SalesIngressListener;
+import cl.transbank.restaurante.messaging.SalesIngressPublisher;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Collection;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.BDDMockito.then;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 class SalesBookTest {
 
-    @Autowired
+    @Mock
+    private SalesIngressPublisher salesIngressPublisher;
+    @Mock
+    private SalesIngressListener salesIngressListener;
+
+    @InjectMocks
     private SalesBook salesBook;
-
-    @Autowired
-    private SalesRepository salesRepository;
-
-    @BeforeEach
-    void setUp() {
-        salesRepository.deleteAll();
-    }
 
     @Test
     void shouldAddEntry() {
@@ -35,7 +34,7 @@ class SalesBookTest {
         SalesIngress entry = salesBook.addEntry(salesIngress);
 
         assertThat(entry).isEqualTo(salesIngress);
-        assertThat(salesRepository.findAll()).hasSize(1);
+        then(salesIngressPublisher).should().publish(salesIngress);
     }
 
     @Test
@@ -43,27 +42,9 @@ class SalesBookTest {
 
         LocalDate today = LocalDate.now();
 
-        SalesIngress yesterdaySale = getSalesIngress(today.minusDays(1));
-        salesBook.addEntry(yesterdaySale);
+        salesBook.getEntriesBy(today);
 
-        SalesIngress todaySale = getSalesIngress(today);
-        salesBook.addEntry(todaySale);
-
-        Collection<SalesIngress> todaySales = salesBook.getEntriesBy(today);
-
-        assertThat(todaySales).containsOnly(todaySale);
-        assertThat(salesRepository.findAll()).hasSize(2);
-    }
-
-    @Test
-    void shouldGetEmptyEntriesWhenUnmatchedDate() {
-
-        LocalDate today = LocalDate.now();
-
-        Collection<SalesIngress> todaySales = salesBook.getEntriesBy(today);
-
-        assertThat(todaySales).isEmpty();
-        assertThat(salesRepository.findAll()).isEmpty();
+        then(salesIngressListener).should().getAllByDate(today);
     }
 
     private SalesIngress getSalesIngress(LocalDate date) {

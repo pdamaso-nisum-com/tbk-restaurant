@@ -1,4 +1,4 @@
-package cl.transbank.restaurante.service;
+package cl.transbank.restaurante.mapper;
 
 import cl.transbank.restaurante.domain.Sales;
 import cl.transbank.restaurante.domain.SalesIngress;

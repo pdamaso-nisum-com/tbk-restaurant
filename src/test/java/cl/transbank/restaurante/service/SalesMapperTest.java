@@ -2,6 +2,7 @@ package cl.transbank.restaurante.service;
 
 import cl.transbank.restaurante.domain.Sales;
 import cl.transbank.restaurante.domain.SalesIngress;
+import cl.transbank.restaurante.mapper.SalesMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
