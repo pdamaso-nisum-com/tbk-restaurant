@@ -3,6 +3,7 @@ package cl.transbank.restaurante.controller;
 import cl.transbank.restaurante.domain.AuthenticationRequest;
 import cl.transbank.restaurante.domain.AuthenticationResponse;
 import cl.transbank.restaurante.security.AuthenticationService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,6 +19,8 @@ public class LoginController {
     }
 
     @PostMapping(path = "/login")
+    @ApiOperation(value = "User login to get JWT token",
+            response = AuthenticationResponse.class)
     public ResponseEntity<AuthenticationResponse> login(@RequestBody AuthenticationRequest authRequest) {
         String token = authenticationService.authenticate(authRequest.getUsername(), authRequest.getPassword());
         return ResponseEntity.ok(new AuthenticationResponse(authRequest.getUsername(), token));

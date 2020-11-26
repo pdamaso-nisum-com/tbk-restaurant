@@ -21,7 +21,7 @@ public class MockSalesIngressScheduler {
         this.salesIngressPublisher = salesIngressPublisher;
     }
 
-    @Scheduled(initialDelay = 10_000L, fixedDelay = 10_000L)
+    @Scheduled(initialDelay = 30_000L, fixedDelay = 10_000L)
     public void trigger() {
         SalesIngress mockSalesIngress = getMockSalesIngress();
         salesIngressPublisher.publish(mockSalesIngress);

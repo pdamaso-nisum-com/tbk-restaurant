@@ -2,6 +2,7 @@ package cl.transbank.restaurante.controller;
 
 import cl.transbank.restaurante.domain.SalesIngress;
 import cl.transbank.restaurante.service.SalesBook;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,12 +25,16 @@ public class SalesController {
     }
 
     @PostMapping
+    @ApiOperation(value = "Register a new sales ingress",
+            response = SalesIngress.class)
     public ResponseEntity<SalesIngress> register(@RequestBody SalesIngress salesIngress) {
         SalesIngress salesEntry = salesBook.addEntry(salesIngress);
         return ResponseEntity.ok(salesEntry);
     }
 
     @GetMapping(path = "/{year}/{month}/{day}")
+    @ApiOperation(value = "Get all sales by specified date",
+            response = SalesIngress.class, responseContainer = "List")
     public ResponseEntity<Collection<SalesIngress>> getAll(@PathVariable Integer year,
                                                            @PathVariable Integer month,
                                                            @PathVariable Integer day) {
