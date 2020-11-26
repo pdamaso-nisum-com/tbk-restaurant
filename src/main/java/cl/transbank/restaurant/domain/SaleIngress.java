@@ -15,7 +15,7 @@ import java.time.LocalDate;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class SalesIngress implements Serializable {
+public class SaleIngress implements Serializable {
     @ApiModelProperty(dataType = "long", value = "Commerce Id")
     private Long commerce;
     @ApiModelProperty(dataType = "string", value = "Sale date", example = "dd-MM-yyyy")

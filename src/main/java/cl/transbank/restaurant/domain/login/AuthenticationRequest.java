@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AuthenticationRequest {
-    @ApiModelProperty(dataType = "string", value = "Username")
+    @ApiModelProperty(dataType = "string", value = "Username", example = "username")
     private String username;
     @ApiModelProperty(dataType = "string", value = "Password", example = "password")
     private String password;

@@ -1,8 +1,8 @@
 package cl.transbank.restaurant.service;
 
-import cl.transbank.restaurant.domain.SalesIngress;
-import cl.transbank.restaurant.messaging.SalesIngressListener;
-import cl.transbank.restaurant.messaging.SalesIngressPublisher;
+import cl.transbank.restaurant.domain.SaleIngress;
+import cl.transbank.restaurant.messaging.SalesListener;
+import cl.transbank.restaurant.messaging.SalesPublisher;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -19,9 +19,9 @@ import static org.mockito.BDDMockito.then;
 class SalesBookTest {
 
     @Mock
-    private SalesIngressPublisher salesIngressPublisher;
+    private SalesPublisher salesPublisher;
     @Mock
-    private SalesIngressListener salesIngressListener;
+    private SalesListener salesListener;
 
     @InjectMocks
     private SalesBook salesBook;
@@ -29,12 +29,12 @@ class SalesBookTest {
     @Test
     void shouldAddEntry() {
 
-        SalesIngress salesIngress = getSalesIngress(LocalDate.now());
+        SaleIngress saleIngress = getSalesIngress(LocalDate.now());
 
-        SalesIngress entry = salesBook.addEntry(salesIngress);
+        SaleIngress entry = salesBook.addEntry(saleIngress);
 
-        assertThat(entry).isEqualTo(salesIngress);
-        then(salesIngressPublisher).should().publish(salesIngress);
+        assertThat(entry).isEqualTo(saleIngress);
+        then(salesPublisher).should().publish(saleIngress);
     }
 
     @Test
@@ -44,11 +44,11 @@ class SalesBookTest {
 
         salesBook.getEntriesBy(today);
 
-        then(salesIngressListener).should().getAllByDate(today);
+        then(salesListener).should().getAllByDate(today);
     }
 
-    private SalesIngress getSalesIngress(LocalDate date) {
-        return SalesIngress.builder()
+    private SaleIngress getSalesIngress(LocalDate date) {
+        return SaleIngress.builder()
                 .commerce(123L)
                 .date(date)
                 .terminal(456L)

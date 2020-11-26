@@ -1,6 +1,6 @@
 package cl.transbank.restaurant.messaging;
 
-import cl.transbank.restaurant.domain.SalesIngress;
+import cl.transbank.restaurant.domain.SaleIngress;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -13,7 +13,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 
 @ExtendWith(MockitoExtension.class)
-class SalesIngressPublisherTest {
+class SalesPublisherTest {
 
     @Mock
     private RabbitTemplate rabbitTemplate;
@@ -21,19 +21,19 @@ class SalesIngressPublisherTest {
     private TopicExchange salesIngressExchange;
 
     @InjectMocks
-    private SalesIngressPublisher salesIngressPublisher;
+    private SalesPublisher salesPublisher;
 
     @Test
     void shouldPublishSalesIngress() {
 
-        SalesIngress salesIngress = SalesIngress.builder().build();
+        SaleIngress saleIngress = SaleIngress.builder().build();
 
         given(salesIngressExchange.getName())
                 .willReturn("mock-exchange");
 
-        salesIngressPublisher.publish(salesIngress);
+        salesPublisher.publish(saleIngress);
 
         then(rabbitTemplate).should()
-                .convertAndSend("mock-exchange", "sales-ingress-rk", salesIngress);
+                .convertAndSend("mock-exchange", "sales-ingress-rk", saleIngress);
     }
 }

@@ -1,7 +1,7 @@
 package cl.transbank.restaurant.mapper;
 
-import cl.transbank.restaurant.domain.Sales;
-import cl.transbank.restaurant.domain.SalesIngress;
+import cl.transbank.restaurant.domain.model.SaleEntity;
+import cl.transbank.restaurant.domain.SaleIngress;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -22,26 +22,26 @@ class SalesMapperTest {
     @Test
     void shouldMapSalesIngressToSales() {
 
-        SalesIngress salesIngress = SalesIngress.builder()
+        SaleIngress saleIngress = SaleIngress.builder()
                 .commerce(123L)
                 .date(LocalDate.now())
                 .terminal(456L)
                 .amount(BigDecimal.valueOf(11.22))
                 .build();
 
-        Sales sales = salesMapper.map(salesIngress);
+        SaleEntity sales = salesMapper.map(saleIngress);
 
         assertThat(sales.getId()).isNull();
-        assertThat(sales.getCommerce()).isEqualTo(salesIngress.getCommerce());
-        assertThat(sales.getDate()).isEqualTo(salesIngress.getDate());
-        assertThat(sales.getTerminal()).isEqualTo(salesIngress.getTerminal());
-        assertThat(sales.getAmount()).isEqualTo(salesIngress.getAmount());
+        assertThat(sales.getCommerce()).isEqualTo(saleIngress.getCommerce());
+        assertThat(sales.getDate()).isEqualTo(saleIngress.getDate());
+        assertThat(sales.getTerminal()).isEqualTo(saleIngress.getTerminal());
+        assertThat(sales.getAmount()).isEqualTo(saleIngress.getAmount());
     }
 
     @Test
     void shouldMapSalesToSalesIngress() {
 
-        Sales sales = Sales.builder()
+        SaleEntity sales = SaleEntity.builder()
                 .id(999L)
                 .commerce(123L)
                 .date(LocalDate.now())
@@ -49,11 +49,11 @@ class SalesMapperTest {
                 .amount(BigDecimal.valueOf(11.22))
                 .build();
 
-        SalesIngress salesIngress = salesMapper.map(sales);
+        SaleIngress saleIngress = salesMapper.map(sales);
 
-        assertThat(salesIngress.getCommerce()).isEqualTo(sales.getCommerce());
-        assertThat(salesIngress.getDate()).isEqualTo(sales.getDate());
-        assertThat(salesIngress.getTerminal()).isEqualTo(sales.getTerminal());
-        assertThat(salesIngress.getAmount()).isEqualTo(sales.getAmount());
+        assertThat(saleIngress.getCommerce()).isEqualTo(sales.getCommerce());
+        assertThat(saleIngress.getDate()).isEqualTo(sales.getDate());
+        assertThat(saleIngress.getTerminal()).isEqualTo(sales.getTerminal());
+        assertThat(saleIngress.getAmount()).isEqualTo(sales.getAmount());
     }
 }

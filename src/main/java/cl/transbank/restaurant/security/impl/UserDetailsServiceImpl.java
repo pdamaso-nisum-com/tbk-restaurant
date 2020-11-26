@@ -1,7 +1,7 @@
 package cl.transbank.restaurant.security.impl;
 
 import cl.transbank.restaurant.domain.model.UserEntity;
-import cl.transbank.restaurant.repository.UserRepository;
+import cl.transbank.restaurant.repository.UsersRepository;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.security.core.userdetails.User;
@@ -17,16 +17,16 @@ import java.util.Collections;
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final PasswordEncoder passwordEncoder;
-    private final UserRepository userRepository;
+    private final UsersRepository usersRepository;
 
-    public UserDetailsServiceImpl(PasswordEncoder passwordEncoder, UserRepository userRepository) {
+    public UserDetailsServiceImpl(PasswordEncoder passwordEncoder, UsersRepository usersRepository) {
         this.passwordEncoder = passwordEncoder;
-        this.userRepository = userRepository;
+        this.usersRepository = usersRepository;
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) {
-        UserEntity userEntity = userRepository.findByUsernameEquals(username)
+        UserEntity userEntity = usersRepository.findByUsernameEquals(username)
                 .orElseThrow(() -> new UsernameNotFoundException(username));
         return new User(userEntity.getUsername(), userEntity.getPassword(), Collections.emptyList());
     }
@@ -37,6 +37,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 .username("username")
                 .password(passwordEncoder.encode("password"))
                 .build();
-        userRepository.save(mockUser);
+        usersRepository.save(mockUser);
     }
 }

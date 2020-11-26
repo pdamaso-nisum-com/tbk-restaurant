@@ -1,8 +1,8 @@
 package cl.transbank.restaurant.service;
 
-import cl.transbank.restaurant.domain.SalesIngress;
-import cl.transbank.restaurant.messaging.SalesIngressListener;
-import cl.transbank.restaurant.messaging.SalesIngressPublisher;
+import cl.transbank.restaurant.domain.SaleIngress;
+import cl.transbank.restaurant.messaging.SalesListener;
+import cl.transbank.restaurant.messaging.SalesPublisher;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -11,21 +11,21 @@ import java.util.Collection;
 @Component
 public class SalesBook {
 
-    private final SalesIngressPublisher salesIngressPublisher;
-    private final SalesIngressListener salesIngressListener;
+    private final SalesPublisher salesPublisher;
+    private final SalesListener salesListener;
 
-    public SalesBook(SalesIngressPublisher salesIngressPublisher,
-                     SalesIngressListener salesIngressListener) {
-        this.salesIngressPublisher = salesIngressPublisher;
-        this.salesIngressListener = salesIngressListener;
+    public SalesBook(SalesPublisher salesPublisher,
+                     SalesListener salesListener) {
+        this.salesPublisher = salesPublisher;
+        this.salesListener = salesListener;
     }
 
-    public SalesIngress addEntry(SalesIngress salesIngress) {
-        salesIngressPublisher.publish(salesIngress);
-        return salesIngress;
+    public SaleIngress addEntry(SaleIngress saleIngress) {
+        salesPublisher.publish(saleIngress);
+        return saleIngress;
     }
 
-    public Collection<SalesIngress> getEntriesBy(LocalDate date) {
-        return salesIngressListener.getAllByDate(date);
+    public Collection<SaleIngress> getEntriesBy(LocalDate date) {
+        return salesListener.getAllByDate(date);
     }
 }

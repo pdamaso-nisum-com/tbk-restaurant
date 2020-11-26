@@ -4,6 +4,7 @@
 * spring boot
 * java 8
 * unit testing with junit
+* rabbitmq
 
 #### How to run unit test
 * `./gradlew clean test --info`
@@ -11,17 +12,24 @@
 #### How to build app
 * `./gradlew build`
 
+#### Prerequisites
+* Run followings commands to install and run RabbitMQ locally
+* `brew update`
+* `brew install rabbitmq`
+* `export PATH=$PATH:/usr/local/sbin`
+* `rabbitmq-server`
+
 #### How to run app (alternatives)
 * `./gradlew bootRun`
 * `java -jar build/libs/restaurant-0.0.1.jar`
 * Run through IDE
 
 ## API
-* To get a JWT token, use any username but password is hardcoded to `password`
+* To get a JWT token, use username as `username` and password as `password`, to match mock user persisted in DB. Response will contain JWT token.
 ```http request
 POST http://localhost:8081/login
 {
-	"username": "some-user",
+	"username": "username",
 	"password": "password"
 }
 ```

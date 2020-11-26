@@ -1,6 +1,6 @@
 package cl.transbank.restaurant.controller;
 
-import cl.transbank.restaurant.domain.SalesIngress;
+import cl.transbank.restaurant.domain.SaleIngress;
 import cl.transbank.restaurant.service.SalesBook;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,28 +35,28 @@ class SalesControllerTest {
     @Test
     void shouldRegisterSalesIngress() {
 
-        SalesIngress salesIngress = getMockSalesIngress(LocalDate.now());
+        SaleIngress saleIngress = getMockSalesIngress(LocalDate.now());
 
-        given(salesBook.addEntry(salesIngress)).willReturn(salesIngress);
+        given(salesBook.addEntry(saleIngress)).willReturn(saleIngress);
 
-        ResponseEntity<SalesIngress> salesIngressRegistered = salesController.register(salesIngress);
+        ResponseEntity<SaleIngress> salesIngressRegistered = salesController.register(saleIngress);
 
         assertThat(salesIngressRegistered.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(salesIngressRegistered.getBody()).isEqualTo(salesIngress);
+        assertThat(salesIngressRegistered.getBody()).isEqualTo(saleIngress);
     }
 
     @Test
     void shouldGetAllSalesRegisteredOnSpecificDate() {
 
         LocalDate today = LocalDate.now();
-        SalesIngress yesterdaySale = getMockSalesIngress(today.minusDays(1));
+        SaleIngress yesterdaySale = getMockSalesIngress(today.minusDays(1));
         salesController.register(yesterdaySale);
-        SalesIngress todaySale = getMockSalesIngress(today);
+        SaleIngress todaySale = getMockSalesIngress(today);
         salesController.register(todaySale);
 
         given(salesBook.getEntriesBy(today)).willReturn(Collections.singletonList(todaySale));
 
-        ResponseEntity<Collection<SalesIngress>> allTodaySales
+        ResponseEntity<Collection<SaleIngress>> allTodaySales
                 = salesController.getAll(today.getYear(), today.getMonth().getValue(), today.getDayOfMonth());
 
         assertThat(allTodaySales.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -69,21 +69,21 @@ class SalesControllerTest {
     void shouldGetEmptyListWhenNoSalesRegisteredOnSpecificDate() {
 
         LocalDate today = LocalDate.now();
-        SalesIngress yesterdaySale = getMockSalesIngress(today.minusDays(1));
+        SaleIngress yesterdaySale = getMockSalesIngress(today.minusDays(1));
         salesController.register(yesterdaySale);
-        SalesIngress todaySale = getMockSalesIngress(today);
+        SaleIngress todaySale = getMockSalesIngress(today);
         salesController.register(todaySale);
 
         LocalDate aWeekAgo = today.minusWeeks(1);
-        ResponseEntity<Collection<SalesIngress>> allTodaySales
+        ResponseEntity<Collection<SaleIngress>> allTodaySales
                 = salesController.getAll(aWeekAgo.getYear(), aWeekAgo.getMonth().getValue(), aWeekAgo.getDayOfMonth());
 
         assertThat(allTodaySales.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(allTodaySales.getBody()).isEmpty();
     }
 
-    private SalesIngress getMockSalesIngress(LocalDate date) {
-        return SalesIngress.builder()
+    private SaleIngress getMockSalesIngress(LocalDate date) {
+        return SaleIngress.builder()
                 .commerce(123L)
                 .date(date)
                 .terminal(456L)

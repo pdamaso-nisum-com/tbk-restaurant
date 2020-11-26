@@ -1,7 +1,7 @@
 package cl.transbank.restaurant.messaging;
 
-import cl.transbank.restaurant.domain.Sales;
-import cl.transbank.restaurant.domain.SalesIngress;
+import cl.transbank.restaurant.domain.model.SaleEntity;
+import cl.transbank.restaurant.domain.SaleIngress;
 import cl.transbank.restaurant.mapper.SalesMapper;
 import cl.transbank.restaurant.repository.SalesRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -18,36 +18,36 @@ import java.util.Map;
 
 @Slf4j
 @Component
-public class SalesIngressListener {
+public class SalesListener {
 
     private final SalesMapper salesMapper;
     private final SalesRepository salesRepository;
-    private final Map<LocalDate, Collection<SalesIngress>> salesByDateMap;
+    private final Map<LocalDate, Collection<SaleIngress>> salesByDateMap;
 
-    public SalesIngressListener(SalesMapper salesMapper, SalesRepository salesRepository) {
+    public SalesListener(SalesMapper salesMapper, SalesRepository salesRepository) {
         this.salesMapper = salesMapper;
         this.salesRepository = salesRepository;
         this.salesByDateMap = new HashMap<>();
     }
 
     @RabbitListener(queues = "#{salesIngressQueue}")
-    private void listen(@Payload SalesIngress salesIngress) {
-        log.info("messageReceived, salesIngress={}", salesIngress);
-        Sales sales = salesMapper.map(salesIngress);
+    private void listen(@Payload SaleIngress saleIngress) {
+        log.info("messageReceived, salesIngress={}", saleIngress);
+        SaleEntity sales = salesMapper.map(saleIngress);
         salesRepository.save(sales);
         log.info("messagePersisted, sales={}", sales);
-        cacheSalesIngress(salesIngress);
+        cacheSalesIngress(saleIngress);
     }
 
-    private void cacheSalesIngress(SalesIngress salesIngress) {
-        LocalDate ingressDate = salesIngress.getDate();
-        Collection<SalesIngress> salesByDate = salesByDateMap.getOrDefault(ingressDate,
+    private void cacheSalesIngress(SaleIngress saleIngress) {
+        LocalDate ingressDate = saleIngress.getDate();
+        Collection<SaleIngress> salesByDate = salesByDateMap.getOrDefault(ingressDate,
                 Collections.synchronizedList(new ArrayList<>()));
-        salesByDate.add(salesIngress);
+        salesByDate.add(saleIngress);
         salesByDateMap.put(ingressDate, salesByDate);
     }
 
-    public Collection<SalesIngress> getAllByDate(LocalDate date) {
+    public Collection<SaleIngress> getAllByDate(LocalDate date) {
         return salesByDateMap.getOrDefault(date, Collections.emptyList());
     }
 }

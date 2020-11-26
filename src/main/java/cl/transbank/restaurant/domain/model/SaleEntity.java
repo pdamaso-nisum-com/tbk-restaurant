@@ -1,4 +1,4 @@
-package cl.transbank.restaurant.domain;
+package cl.transbank.restaurant.domain.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,7 +17,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Sales {
+public class SaleEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;

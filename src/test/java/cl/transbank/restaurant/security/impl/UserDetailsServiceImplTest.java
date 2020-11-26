@@ -1,7 +1,7 @@
 package cl.transbank.restaurant.security.impl;
 
 import cl.transbank.restaurant.domain.model.UserEntity;
-import cl.transbank.restaurant.repository.UserRepository;
+import cl.transbank.restaurant.repository.UsersRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,12 +19,12 @@ class UserDetailsServiceImplTest {
     private UserDetailsServiceImpl userDetailsService;
 
     @Autowired
-    private UserRepository userRepository;
+    private UsersRepository usersRepository;
 
     @BeforeEach
     void setUp() {
-        userRepository.deleteAll();
-        userRepository.save(UserEntity.builder().username("username").password("some-encoded-password").build());
+        usersRepository.deleteAll();
+        usersRepository.save(UserEntity.builder().username("username").password("some-encoded-password").build());
     }
 
     @Test

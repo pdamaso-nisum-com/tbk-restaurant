@@ -1,7 +1,7 @@
 package cl.transbank.restaurant.scheduler;
 
-import cl.transbank.restaurant.domain.SalesIngress;
-import cl.transbank.restaurant.messaging.SalesIngressPublisher;
+import cl.transbank.restaurant.domain.SaleIngress;
+import cl.transbank.restaurant.messaging.SalesPublisher;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomUtils;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -13,30 +13,30 @@ import java.time.LocalDate;
 
 @Slf4j
 @Component
-public class MockSalesIngressScheduler {
+public class MockSalesScheduler {
 
-    private final SalesIngressPublisher salesIngressPublisher;
+    private final SalesPublisher salesPublisher;
 
-    public MockSalesIngressScheduler(SalesIngressPublisher salesIngressPublisher) {
-        this.salesIngressPublisher = salesIngressPublisher;
+    public MockSalesScheduler(SalesPublisher salesPublisher) {
+        this.salesPublisher = salesPublisher;
     }
 
     @Scheduled(initialDelay = 30_000L, fixedDelay = 10_000L)
     public void trigger() {
-        SalesIngress mockSalesIngress = getMockSalesIngress();
-        salesIngressPublisher.publish(mockSalesIngress);
+        SaleIngress mockSaleIngress = getMockSalesIngress();
+        salesPublisher.publish(mockSaleIngress);
     }
 
-    private SalesIngress getMockSalesIngress() {
+    private SaleIngress getMockSalesIngress() {
         BigDecimal amount = BigDecimal.valueOf(RandomUtils.nextDouble(500.00, 20000.00))
                 .setScale(2, RoundingMode.HALF_DOWN);
-        SalesIngress salesIngress = SalesIngress.builder()
+        SaleIngress saleIngress = SaleIngress.builder()
                 .commerce(RandomUtils.nextLong(100, 199))
                 .date(LocalDate.now())
                 .terminal(RandomUtils.nextLong(500, 599))
                 .amount(amount)
                 .build();
-        log.info("mockScheduler, salesIngress={}", salesIngress);
-        return salesIngress;
+        log.info("mockScheduler, salesIngress={}", saleIngress);
+        return saleIngress;
     }
 }
