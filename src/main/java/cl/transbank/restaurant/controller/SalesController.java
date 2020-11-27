@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.Collection;
 
@@ -27,7 +28,7 @@ public class SalesController {
     @PostMapping
     @ApiOperation(value = "Register a new sales ingress",
             response = SaleIngress.class)
-    public ResponseEntity<SaleIngress> register(@RequestBody SaleIngress saleIngress) {
+    public ResponseEntity<SaleIngress> register(@Valid @RequestBody SaleIngress saleIngress) {
         SaleIngress salesEntry = salesBook.addEntry(saleIngress);
         return ResponseEntity.ok(salesEntry);
     }
