@@ -1,6 +1,6 @@
 package cl.transbank.restaurant.messaging;
 
-import cl.transbank.restaurant.domain.SaleIngress;
+import cl.transbank.restaurant.domain.input.SaleIngress;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

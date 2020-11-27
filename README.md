@@ -45,7 +45,7 @@ POST http://localhost:8081/api/v1/sales
 ```
 * To get all sales registered on a specific date
 ```http request
-GET http://localhost:8081/api/v1/sales/{{year}}/{{month}}/{{day}}}}
+GET http://localhost:8081/api/v1/sales/{{year}}/{{month}}/{{day}}
 ```
 
 ## API Docs

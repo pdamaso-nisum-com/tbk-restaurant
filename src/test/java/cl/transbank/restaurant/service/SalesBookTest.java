@@ -1,6 +1,6 @@
 package cl.transbank.restaurant.service;
 
-import cl.transbank.restaurant.domain.SaleIngress;
+import cl.transbank.restaurant.domain.input.SaleIngress;
 import cl.transbank.restaurant.messaging.SalesListener;
 import cl.transbank.restaurant.messaging.SalesPublisher;
 import org.junit.jupiter.api.Test;

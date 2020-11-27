@@ -1,7 +1,7 @@
 package cl.transbank.restaurant.messaging;
 
 import cl.transbank.restaurant.domain.model.SaleEntity;
-import cl.transbank.restaurant.domain.SaleIngress;
+import cl.transbank.restaurant.domain.input.SaleIngress;
 import cl.transbank.restaurant.mapper.SalesMapper;
 import cl.transbank.restaurant.repository.SalesRepository;
 import lombok.extern.slf4j.Slf4j;

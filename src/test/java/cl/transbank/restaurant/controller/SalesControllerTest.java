@@ -1,6 +1,6 @@
 package cl.transbank.restaurant.controller;
 
-import cl.transbank.restaurant.domain.SaleIngress;
+import cl.transbank.restaurant.domain.input.SaleIngress;
 import cl.transbank.restaurant.service.SalesBook;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

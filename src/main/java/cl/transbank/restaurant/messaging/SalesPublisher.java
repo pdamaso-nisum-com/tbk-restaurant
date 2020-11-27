@@ -1,6 +1,6 @@
 package cl.transbank.restaurant.messaging;
 
-import cl.transbank.restaurant.domain.SaleIngress;
+import cl.transbank.restaurant.domain.input.SaleIngress;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.TopicExchange;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;

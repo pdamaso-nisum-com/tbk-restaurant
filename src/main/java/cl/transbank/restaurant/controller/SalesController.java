@@ -1,6 +1,6 @@
 package cl.transbank.restaurant.controller;
 
-import cl.transbank.restaurant.domain.SaleIngress;
+import cl.transbank.restaurant.domain.input.SaleIngress;
 import cl.transbank.restaurant.service.SalesBook;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.ResponseEntity;
